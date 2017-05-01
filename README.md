@@ -36,3 +36,24 @@ def insert
   self.id = DBConnection.last_insert_row_id
 end
 ```
+
+#### "Where" Searches
+I have also added a separate "Searchable" module to enable ::where searches across SQL object classes. The code for this module can be found below:
+
+```
+module Searchable
+  def where(params)
+    where_line = params.map { |k, v| "#{k} = ?"}.join(" AND ")
+    vals = params.values
+    data = DBConnection.execute(<<-SQL, *vals)
+      SELECT
+        *
+      FROM
+        #{self.table_name}
+      WHERE
+        #{where_line}
+    SQL
+    self.parse_all(data)
+  end
+end
+```
