@@ -57,3 +57,8 @@ module Searchable
   end
 end
 ```
+
+
+#### Object relationships
+
+In addition to the functionality above, I have also added Active Record associations through the Associable module. This module allows allows different SQL classes to be related to one another through the traditional "belongs_to" and "has_many" relationships. This corresponds to the relationships that are present in SQL tables whenever different tables are connected with the use of a foreign key. Here is an example of the code for #has_many:
