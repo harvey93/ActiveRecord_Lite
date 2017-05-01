@@ -20,3 +20,19 @@ The SQL objects implemented in Active Record Lite include the following methods:
 - #update - Updates SQL object's attributes
 
 Many of these methods rely on DBConnection (found in db_connection.rb) to interact with the database. Here is an example of the insert method:
+
+```
+def insert
+  col_names = self.class.columns.join(",")
+  question_marks = (["?"] * self.class.columns.length).join(",")
+
+  DBConnection.execute(<<-SQL, *attribute_values)
+    INSERT INTO
+      #{self.class.table_name}(#{col_names})
+    VALUES
+      (#{question_marks})
+  SQL
+
+  self.id = DBConnection.last_insert_row_id
+end
+```
